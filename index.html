@@ -62,6 +62,45 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-git的使用经验" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/10/git的使用经验/" class="article-date">
+  <time datetime="2018-04-10T03:14:59.726Z" itemprop="datePublished">2018-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/10/git的使用经验/">面试整理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##<br>git命令和误区整理<br>git的安装过程在这里就忽略了<br>git版本查看命令<br>git –version<br>git的整个使用设置<br>1》设置用户名和邮箱（全局和本地（去掉global即可））<br>git config –global user.name “user.name”<br>git config –global user.email “user.email”<br>(此处有操作上的坑，在设定完用户名和email后不可做额外操作<br>如有对代码的各种操作如pull，commit，push等切记用这个账户完成全部操作，而且email必须是在远程库里边设置过并且有权限的)<br>我们继续git的使用设置<br>生成SSH<br>ssh-keygen -t rsa<br>查看SSH<br>cat ~/.ssh/id_rsa.pub<br>拷贝粘贴到github里边的个人信息的SSH公匙里<br>这样就设置完整了</p>
+<p>git查看全部配置信息<br>git config –list<br>git remote add origin <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:han1202012/TabHost_Test.git（地址）<br>push信息到远程库<br>第一个develop-minor为本地分支<br>后一个为远程仓库的分支<br>git push origin develop-minor:refs/for/develop-minor<br>git丢弃文件<br>git checkout – a.txt<br>git checkout . 丢弃全部<br>git add xxx  后，代码不想提交了<br>git reset HEAD .  或者<br>git reset HEAD a.js<br>如果想要回退到之前某一个版本可以如下操作<br>git reset –hard 5dc29bebe8 这个是回退到指定版本<br>git reset –hard HEAD^这个是会退到之前的版本</p>
+<p>这里说一个git的log命令<br>git log会显示最近3次提交的版本记录谁提交的邮箱是哪个都会显示出来<br>不仅如此git还提供了一定的格式占位符来代表一定的意义如下<br>%H    提交对象（commit）的完整哈希字串<br>%h    提交对象的简短哈希字串<br>%T    树对象（tree）的完整哈希字串<br>%t    树对象的简短哈希字串<br>%P    父对象（parent）的完整哈希字串<br>%p    父对象的简短哈希字串<br>%an    作者（author）的名字<br>%ae    作者的电子邮件地址<br>%ad    作者修订日期（可以用 -date= 选项定制格式）<br>%ar    作者修订日期，按多久以前的方式显示<br>%cn    提交者(committer)的名字<br>%ce    提交者的电子邮件地址<br>%cd    提交日期<br>%cr    提交日期，按多久以前的方式显示<br>%s    提交说明<br>命令模本如下<br>$ git log –pretty=format:”%h - %an, %ar : %s”<br>git log还有其他的用法这里就不多说了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/10/git的使用经验/" data-id="cjg7n9rij00007ibtyu56b886" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/04/10/hello-world/" class="article-date">
@@ -92,7 +131,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/10/hello-world/" data-id="cjfuqs9720000cnbt9hgrs9ht" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/10/hello-world/" data-id="cjg7n9rin00017ibtpsa63icc" class="article-share-link">Share</a>
       
       
     </footer>
@@ -151,7 +190,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/10/java面试整理/" data-id="cjfuqs9760001cnbti1mt2awc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/10/java面试整理/" data-id="cjg7n9rip00027ibtnkqpalht" class="article-share-link">Share</a>
       
       
     </footer>
@@ -190,6 +229,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/04/10/git的使用经验/">面试整理</a>
+          </li>
         
           <li>
             <a href="/2018/04/10/hello-world/">杨佳妮</a>
