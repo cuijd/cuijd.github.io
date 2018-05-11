@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>spring-boot前后端交互的工具类 | 崔先生的Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="元注解是注解的注解，包括@Retention @Target @Document @Inherited四种 ##package com.baidu.p2p.core.j2ee.action; import java.util.ArrayList;import java.util.HashMap;import java.util.Map; import org.apache.commons.lang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring-boot前后端交互的工具类">
+<meta property="og:url" content="http://yoursite.com/2018/04/10/spring-boot前后端交互的工具类/index.html">
+<meta property="og:site_name" content="崔先生的Blog">
+<meta property="og:description" content="元注解是注解的注解，包括@Retention @Target @Document @Inherited四种 ##package com.baidu.p2p.core.j2ee.action; import java.util.ArrayList;import java.util.HashMap;import java.util.Map; import org.apache.commons.lang">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-11T06:07:04.087Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring-boot前后端交互的工具类">
+<meta name="twitter:description" content="元注解是注解的注解，包括@Retention @Target @Document @Inherited四种 ##package com.baidu.p2p.core.j2ee.action; import java.util.ArrayList;import java.util.HashMap;import java.util.Map; import org.apache.commons.lang">
+  
+    <link rel="alternate" href="/atom.xml" title="崔先生的Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">崔先生的Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-spring-boot前后端交互的工具类" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/10/spring-boot前后端交互的工具类/" class="article-date">
+  <time datetime="2018-04-10T03:14:59.726Z" itemprop="datePublished">2018-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      spring-boot前后端交互的工具类
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>元注解是注解的注解，包括@Retention @Target @Document @Inherited四种</p>
+<p>##<br>package com.baidu.p2p.core.j2ee.action;</p>
+<p>import java.util.ArrayList;<br>import java.util.HashMap;<br>import java.util.Map;</p>
+<p>import org.apache.commons.lang3.ArrayUtils;<br>import org.apache.commons.lang3.Validate;<br>import org.apache.ibatis.reflection.MetaObject;<br>import org.apache.ibatis.reflection.SystemMetaObject;</p>
+<p>import com.baidu.p2p.core.fastjson.JSONStringBuilder;<br>import com.baidu.p2p.core.j2ee.exception.BaseRuntimeException;<br>import com.baidu.p2p.core.j2ee.exception.NoPermissionException;<br>import com.baidu.p2p.core.utils.Exceptions;<br>import com.baidu.p2p.core.utils.StringUtils;<br>import com.baidu.p2p.core.utils.UtilType;<br>import com.google.common.collect.Maps;</p>
+<p>public class JsonResult<t> {<br>public static void main(String[] args) {<br>JsonResult&lt;?&gt; o = new JsonResult&lt;&gt;();<br>System.out.println(o.data(“xx”, 12).toJSONString());</t></p>
+<p>HashMap&lt;String, Object&gt; data = Maps.newHashMap();<br>data.put(“list”, new ArrayList&lt;&gt;());<br>data.put(“total”, 100);</p>
+<p>System.out.println(JsonResult.okJsonResultWithData(data).toJSONString());</p>
+<p>System.out.println(JsonResult.failJsonResult(“错误！”).toJSONString());</p>
+<p>System.out.println(JsonResult.needLoginJsonResult().toJSONString());</p>
+<p>}</p>
+<p>public static final String ERROR = “error”;<br>public static final String OK = “ok”;<br>public static final String NEED_LOGIN = “needLogin”;<br>public static final String PERMISSION_DENY = “permissionDeny”;</p>
+<p>public static final String SESSION_TIMEOUT = “sessionTimeout”;<br>public static final String DATABAS_EEXCEPTION = “databaseException”;</p>
+<p>public static final String JSON_TYPE = “json”;<br>public static final String TEXT_TYPE = “text”;<br>public static final String FORWARD_TYPE = “forward”;</p>
+<p>private String status;<br>private String message;<br>private String type;<br>private Integer total;<br>private Boolean onlyData;<br>private String dateFmt;<br>private String debugInfo;</p>
+<p>private T data;</p>
+<p>public String getDebugInfo() {<br>return debugInfo;<br>}</p>
+<p>public void setDebugInfo(String debugInfo) {<br>this.debugInfo = debugInfo;<br>}</p>
+<p>public boolean jsonType() {<br>return (StringUtils.equalsIgnoreCase(JSON_TYPE, this.getType()));<br>}</p>
+<p>public boolean textType() {<br>return (StringUtils.equalsIgnoreCase(TEXT_TYPE, this.getType()));<br>}</p>
+<p>public boolean forwardType() {<br>return (StringUtils.equalsIgnoreCase(FORWARD_TYPE, this.getType()));<br>}</p>
+<p>public String getDateFmt() {<br>return dateFmt;<br>}</p>
+<p>public void setDateFmt(String dateFmt) {<br>this.dateFmt = dateFmt;<br>}</p>
+<p>public static <t> JsonResult<t> okJsonResultWithData(T data) {<br>JsonResult<t> jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setData(data);<br>return jsonResult;<br>}</t></t></t></p>
+<p>public static JsonResult&lt;?&gt; okJsonResult() {<br>return okJsonResultWithMsg(“”);<br>}</p>
+<p>public static JsonResult&lt;?&gt; okJsonResultWithMsg(String message) {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setMessage(message);<br>return jsonResult;<br>}</p>
+<p>public static JsonResult<string> okJsonResultWithContent(String dataType, String content) {<br>JsonResult<string> jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setType(dataType);<br>jsonResult.setData(content);<br>return jsonResult;<br>}</string></string></p>
+<p>public static JsonResult<string> okJsonResultWithForward(String forwardUrl) {<br>JsonResult<string> jsonResult = new JsonResult<string>();<br>jsonResult.setForwardUrl(forwardUrl);<br>return jsonResult;<br>}</string></string></string></p>
+<p>public static JsonResult&lt;?&gt; failJsonResult(String message) {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setStatus(ERROR);<br>jsonResult.setMessage(message);<br>return jsonResult;<br>}<br>public static JsonResult&lt;?&gt; failJsonResult(Throwable wrapped) {<br>JsonResult&lt;?&gt; jsonResult = null;<br>if (wrapped instanceof IllegalArgumentException) {<br>jsonResult = failJsonResult(Exceptions.getMsg(wrapped));<br>} else if (!(wrapped instanceof BaseRuntimeException)) {<br>jsonResult = failJsonResult(“出错了，请检查！”);<br>} else {<br>BaseRuntimeException bre = (BaseRuntimeException) wrapped;<br>if (bre.getMessage() == null &amp;&amp; bre.getErrorCode() == null) {<br>jsonResult = failJsonResult(“出错了，请检查！”);<br>} else {<br>jsonResult = failJsonResult(Exceptions.getMsg(wrapped));<br>}<br>}<br>jsonResult.setDebugInfo(Exceptions.getStackTraceAsString(wrapped));<br>return jsonResult;<br>}<br>public static JsonResult&lt;?&gt; failJsonResult(String status, String message) {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setStatus(status);<br>jsonResult.setMessage(message);<br>return jsonResult;<br>}</p>
+<p>public static <t> JsonResult<t> failJsonResultWithData(T data) {<br>JsonResult<t> jsonResult = new JsonResult<t>();<br>jsonResult.setStatus(ERROR);<br>jsonResult.setData(data);<br>return jsonResult;<br>}</t></t></t></t></p>
+<p>public static JsonResult&lt;?&gt; needLoginJsonResult() {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setStatus(NEED_LOGIN);<br>jsonResult.setMessage(“need login!”);<br>jsonResult.setForwardUrl(“/logout”);<br>return jsonResult;<br>}</p>
+<p>public static JsonResult&lt;?&gt; permissionDenyJsonResult() {<br>return permissionDenyJsonResult(PERMISSION_DENY);<br>}</p>
+<p>public static JsonResult&lt;?&gt; permissionDenyJsonResult(String message) {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setStatus(PERMISSION_DENY);<br>jsonResult.setMessage(message);<br>return jsonResult;<br>}</p>
+<p>public static JsonResult&lt;?&gt; permissionDenyJsonResult(NoPermissionException ex) {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setStatus(PERMISSION_DENY);<br>jsonResult.setMessage(StringUtils.isEmpty(ex.getMessage()) ? PERMISSION_DENY : ex.getMessage());<br>return jsonResult;<br>}</p>
+<p>public JsonResult() {<br>this.setStatus(OK);<br>}</p>
+<p>public T getData() {<br>return data;<br>}</p>
+<p>public void setData(T data) {<br>this.data = data;<br>}</p>
+<p>public void setData(T data, boolean b) {<br>this.onlyData(b).setData(data);<br>}</p>
+<p>@SuppressWarnings(“unchecked”)<br>public JsonResult<t> data(Map&lt;String, Object&gt; map) {<br>if (this.data == null) {<br>this.data = (T) Maps.&lt;String, Object&gt;newLinkedHashMap();<br>}<br>UtilType.copyProperties(data, map);<br>return this;<br>}</t></p>
+<p>@SuppressWarnings(“unchecked”)<br>public JsonResult<t> data(String key, Object value) {<br>if (this.data == null) {<br>this.data = (T) Maps.&lt;String, Object&gt;newLinkedHashMap();<br>}<br>MetaObject metaObject = SystemMetaObject.forObject(data);<br>metaObject.setValue(key, value);<br>return this;<br>}</t></p>
+<p>public Boolean isOnlyData() {<br>return onlyData;<br>}</p>
+<p>public JsonResult<t> onlyData(Boolean onlyData) {<br>this.onlyData = onlyData;<br>return this;<br>}</t></p>
+<p>@SuppressWarnings(“unchecked”)<br>public void setForwardUrl(String forwardUrl) {<br>this.setType(FORWARD_TYPE);<br>this.setData(((T) forwardUrl));<br>}</p>
+<p>public String getType() {<br>return type;<br>}</p>
+<p>public void setType(String type) {<br>this.type = type;<br>}</p>
+<p>public String getStatus() {<br>return status;<br>}</p>
+<p>public void setStatus(String statusCode) {<br>this.status = statusCode;<br>}</p>
+<p>public String getMessage() {<br>return message;<br>}</p>
+<p>public void setMessage(String message) {<br>this.message = message;<br>}</p>
+<p>public Integer getTotal() {<br>return total;<br>}</p>
+<p>public void setTotal(Integer total) {<br>this.total = total;<br>}</p>
+<p>public String toJSONString() {<br>Validate.notBlank(this.getStatus(), “必须提供StatusCode”);<br>JSONStringBuilder builder = null;<br>if (onlyData != null &amp;&amp; this.isOnlyData()) {<br>builder = new JSONStringBuilder(data);<br>} else {<br>builder = new JSONStringBuilder(this);<br>}<br>String[] excludes = {“dateFmt”};<br>if (StringUtils.isEmpty(this.message)) {<br>excludes = ArrayUtils.add(excludes, “message”);<br>}<br>return builder.dateFmt(dateFmt).exclude(excludes).toString();<br>}</p>
+<p>}</p>
+<p>使用方法为JsonResult.okJsonResult()等等</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/10/spring-boot前后端交互的工具类/" data-id="cjh1laqwh0004a5btwnzeumld" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/10/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          杨佳妮
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/10/java面试整理/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Java面试整理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/04/10/git的使用经验/">git的使用经验</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/java四大元注解/">JAVA的四大元注解</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/java并发编程--Executor框架/">JAVA并发编程--Executor</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/hello-world/">杨佳妮</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/spring-boot前后端交互的工具类/">spring-boot前后端交互的工具类</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 崔建东<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

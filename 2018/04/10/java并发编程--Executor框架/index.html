@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>JAVA并发编程--Executor | 崔先生的Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="##Eexecutor作为灵活且强大的异步执行框架，其支持多种不同类型的任务执行策略，提供了一种标准的方法将任务的提交过程和执行过程解耦开发，基于生产者-消费者模式，其提交任务的线程相当于生产者，执行任务的线程相当于消费者，并用Runnable来表示任务，Executor的实现还提供了对生命周期的支持，以及统计信息收集，应用程序管理机制和性能监视等机制。1.Exexctor简介Executor的U">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA并发编程--Executor">
+<meta property="og:url" content="http://yoursite.com/2018/04/10/java并发编程--Executor框架/index.html">
+<meta property="og:site_name" content="崔先生的Blog">
+<meta property="og:description" content="##Eexecutor作为灵活且强大的异步执行框架，其支持多种不同类型的任务执行策略，提供了一种标准的方法将任务的提交过程和执行过程解耦开发，基于生产者-消费者模式，其提交任务的线程相当于生产者，执行任务的线程相当于消费者，并用Runnable来表示任务，Executor的实现还提供了对生命周期的支持，以及统计信息收集，应用程序管理机制和性能监视等机制。1.Exexctor简介Executor的U">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-11T06:34:54.473Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JAVA并发编程--Executor">
+<meta name="twitter:description" content="##Eexecutor作为灵活且强大的异步执行框架，其支持多种不同类型的任务执行策略，提供了一种标准的方法将任务的提交过程和执行过程解耦开发，基于生产者-消费者模式，其提交任务的线程相当于生产者，执行任务的线程相当于消费者，并用Runnable来表示任务，Executor的实现还提供了对生命周期的支持，以及统计信息收集，应用程序管理机制和性能监视等机制。1.Exexctor简介Executor的U">
+  
+    <link rel="alternate" href="/atom.xml" title="崔先生的Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">崔先生的Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java并发编程--Executor框架" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/10/java并发编程--Executor框架/" class="article-date">
+  <time datetime="2018-04-10T03:14:59.726Z" itemprop="datePublished">2018-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JAVA并发编程--Executor
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##<br>Eexecutor作为灵活且强大的异步执行框架，其支持多种不同类型的任务执行策略，提供了一种标准的方法将任务的提交过程和执行过程解耦开发，基于生产者-消费者模式，其提交任务的线程相当于生产者，执行任务的线程相当于消费者，并用Runnable来表示任务，Executor的实现还提供了对生命周期的支持，以及统计信息收集，应用程序管理机制和性能监视等机制。<br>1.Exexctor简介<br>Executor的UML图：（常用的几个接口和子类）<br><a href="https://images2015.cnblogs.com/blog/776259/201604/776259-20160426201537486-1323529733.png" target="_blank" rel="noopener">https://images2015.cnblogs.com/blog/776259/201604/776259-20160426201537486-1323529733.png</a><br>Executor：一个接口，其定义了一个接收Runnable对象的方法executor，其方法签名为executor(Runnable command),</p>
+<p>ExecutorService：是一个比Executor使用更广泛的子类接口，其提供了生命周期管理的方法，以及可跟踪一个或多个异步任务执行状况返回Future的方法</p>
+<p>AbstractExecutorService：ExecutorService执行方法的默认实现</p>
+<p>ScheduledExecutorService：一个可定时调度任务的接口</p>
+<p>ScheduledThreadPoolExecutor：ScheduledExecutorService的实现，一个可定时调度任务的线程池</p>
+<p>ThreadPoolExecutor：线程池，可以通过调用Executors以下静态工厂方法来创建线程池并返回一个ExecutorService对象：<br>2.ThreadPoolExecutor构造函数的各个参数说明<br>ThreadPoolExecutor方法签名</p>
+<p>public ThreadPoolExecutor(int corePoolSize,<br>                    int maximumPoolSize,<br>                    long keepAliveTime,<br>                    TimeUnit unit,<br>                    BlockingQueue<runnable> workQueue,<br>                    ThreadFactory threadFactory,<br>                    RejectedExecutionHandler handler) //后两个参数为可选参数<br>参数说明：<br>corePoolSize：核心线程数，如果运行的线程少于corePoolSize，则创建新线程来执行新任务，即使线程池中的其他线程是空闲的</runnable></p>
+<p>maximumPoolSize:最大线程数，可允许创建的线程数，corePoolSize和maximumPoolSize设置的边界自动调整池大小：<br>corePoolSize &lt;运行的线程数&lt; maximumPoolSize:仅当队列满时才创建新线程<br>corePoolSize=运行的线程数= maximumPoolSize：创建固定大小的线程池</p>
+<p>keepAliveTime:如果线程数多于corePoolSize,则这些多余的线程的空闲时间超过keepAliveTime时将被终止</p>
+<p>unit:keepAliveTime参数的时间单位</p>
+<p>workQueue:保存任务的阻塞队列，与线程池的大小有关：<br>当运行的线程数少于corePoolSize时，在有新任务时直接创建新线程来执行任务而无需再进队列<br>当运行的线程数等于或多于corePoolSize，在有新任务添加时则选加入队列，不直接创建线程<br>当队列满时，在有新任务时就创建新线程</p>
+<p>threadFactory:使用ThreadFactory创建新线程，默认使用defaultThreadFactory创建线程</p>
+<p>handle:定义处理被拒绝任务的策略，默认使用ThreadPoolExecutor.AbortPolicy,任务被拒绝时将抛出RejectExecutorException<br>3.Executors：提供了一系列静态工厂方法用于创建各种线程池<br>newFixedThreadPool:创建可重用且固定线程数的线程池，如果线程池中的所有线程都处于活动状态，此时再提交任务就在队列中等待，直到有可用线程；如果线程池中的某个线程由于异常而结束时，线程池就会再补充一条新线程。<br>方法签名：<br>public static ExecutorService newFixedThreadPool(int nThreads) {<br>    return new ThreadPoolExecutor(nThreads, nThreads,0L, TimeUnit.MILLISECONDS,<br>    //使用一个基于FIFO排序的阻塞队列，在所有corePoolSize线程都忙时新任务将在队列中等待<br>    new LinkedBlockingQueue<runnable>());<br>}<br>newSingleThreadExecutor:创建一个单线程的Executor，如果该线程因为异常而结束就新建一条线程来继续执行后续的任务<br>方法签名：<br>public static ExecutorService newSingleThreadExecutor() {<br>    return new FinalizableDelegatedExecutorService<br>//corePoolSize和maximumPoolSize都等于，表示固定线程池大小为1<br>    (new ThreadPoolExecutor(1, 1,0L, TimeUnit.MILLISECONDS,<br>    new LinkedBlockingQueue<runnable>()));<br>}<br>newScheduledThreadPool:创建一个可延迟执行或定期执行的线程池<br>方法签名：</runnable></runnable></p>
+<p>使用newScheduledThreadPool来模拟心跳机制<br>public class HeartBeat {<br>public static void main(String[] args) {<br>ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);<br>Runnable task = new Runnable() {<br>public void run() {<br>System.out.println(“HeartBeat…………………….”);<br>}<br>};<br>executor.scheduleAtFixedRate(task,5,3, TimeUnit.SECONDS);   //5秒后第一次执行，之后每隔3秒执行一次<br>}<br>}<br>newCachedThreadPool:创建可缓存的线程池，如果线程池中的线程在60秒未被使用就将被移除，在执行新的任务时，当线程池中有之前创建的可用线程就重      用可用线程，否则就新建一条线程<br>方法签名：<br>public static ExecutorService newCachedThreadPool() {<br>    return new ThreadPoolExecutor(0, Integer.MAX_VALUE,60L, TimeUnit.SECONDS,<br>    //使用同步队列，将任务直接提交给线程<br>    new SynchronousQueue<runnable>());<br>}<br>通过使用Executor可以很轻易的实现各种调优  管理  监视  记录日志和错误报告等待。<br>4.Executor的生命周期<br>ExecutorService提供了管理Eecutor生命周期的方法，ExecutorService的生命周期包括了：运行  关闭和终止三种状态。</runnable></p>
+<p>ExecutorService在初始化创建时处于运行状态。<br>shutdown方法等待提交的任务执行完成并不再接受新任务，在完成全部提交的任务后关闭<br>shutdownNow方法将强制终止所有运行中的任务并不再允许提交新任务<br>可以将一个Runnable或Callable提交给ExecutorService的submit方法执行，最终返回一上Futire用来获得任务的执行结果或取消任务<br>public class CallableAndFuture {<br>public static void main(String[] args) throws ExecutionException, InterruptedException {<br>ExecutorService executor = Executors.newSingleThreadExecutor();<br>Future<string> future = executor.submit(new Callable<string>() {   //接受一上callable实例<br>public String call() throws Exception {<br>return “MOBIN”;<br>}<br>});<br>System.out.println(“任务的执行结果：”+future.get());<br>}<br>}<br>ExecutorCompletionService:实现了CompletionService，将执行完成的任务放到阻塞队列中，通过take或poll方法来获得执行结果<br>public class CompletionServiceTest {<br>public static void main(String[] args) throws InterruptedException, ExecutionException {<br>ExecutorService executor = Executors.newFixedThreadPool(10);        //创建含10.条线程的线程池<br>CompletionService completionService = new ExecutorCompletionService(executor);<br>for (int i =1; i &lt;=10; i ++) {<br>final  int result = i;<br>completionService.submit(new Callable() {<br>public Object call() throws Exception {<br>Thread.sleep(new Random().nextInt(5000));   //让当前线程随机休眠一段时间<br>return result;<br>}<br>});<br>}<br>System.out.println(completionService.take().get());   //获取执行结果<br>}<br>}<br>通过Executor来设计应用程序可以简化开发过程，提高开发效率，并有助于实现并发，在开发中如果需要创建线程可优先考虑使用Executor</string></string></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/10/java并发编程--Executor框架/" data-id="cjh1laqwe0002a5bt2wyvdjvk" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/10/java四大元注解/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          JAVA的四大元注解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/10/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">杨佳妮</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/04/10/git的使用经验/">git的使用经验</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/java四大元注解/">JAVA的四大元注解</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/java并发编程--Executor框架/">JAVA并发编程--Executor</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/hello-world/">杨佳妮</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/spring-boot前后端交互的工具类/">spring-boot前后端交互的工具类</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 崔建东<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

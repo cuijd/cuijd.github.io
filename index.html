@@ -91,7 +91,102 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/10/git的使用经验/" data-id="cjg7ndhab00008ubti6gkkair" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/10/git的使用经验/" data-id="cjh1laqw80000a5bt9w7ibu3g" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-java四大元注解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/10/java四大元注解/" class="article-date">
+  <time datetime="2018-04-10T03:14:59.726Z" itemprop="datePublished">2018-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/10/java四大元注解/">JAVA的四大元注解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>元注解是注解的注解，包括@Retention @Target @Document @Inherited四种</p>
+<p>##<br>1:@Retention:定义注解的保留策略<br>@Retention(RetentionPolicy.SOURCE)   //注解仅存在于源码中，在class字节码文件中不包含<br>@Retention(RetentionPolicy.CLASS)     // 默认的保留策略，注解会在class字节码文件中存在，但运行时无法获得，<br>@Retention(RetentionPolicy.RUNTIME)  // 注解会在class字节码文件中存在，在运行时可以通过反射获取到<br>首 先要明确生命周期长度 SOURCE &lt; CLASS &lt; RUNTIME ，所以前者能作用的地方后者一定也能作用。一般如果需要在运行时去动态获取注解信息，那只能用 RUNTIME 注解；如果要在编译时进行一些预处理操作，比如生成一些辅助代码（如 ButterKnife），就用 CLASS注解；如果只是做一些检查性的操作，比如 @Override 和 @SuppressWarnings，则可选用 SOURCE 注解。<br>枚举的三种策略<br>public enum RetentionPolicy {<br>SOURCE,<br>CLASS,<br>RUNTIME<br>}<br>三种不同策略去注解三个方法<br>@Retention(RetentionPolicy.SOURCE)<br>public @interface SourceLevel {<br>}<br>@Retention(RetentionPolicy.CLASS)<br>public @interface ClassLevel {<br>}<br>@Retention(RetentionPolicy.RUNTIME)<br>public @interface RuntimeLevel {<br>}</p>
+<p>public class Test {</p>
+<p>@SourceLevel<br>public void sourceLevel(){}<br>@ClassLevel<br>public void classLevel(){};<br>@RuntimeLevel<br>public void runtimeLevel(){};</p>
+<p>}</p>
+<p>2.@Target：定义注解的作用目标<br>指示注释类型所适用的程序元素的种类。如果注释类型声明中不存在 Target 元注释，则声明的类型可以用在任一程序元素上。如果存在这样的元注释，则编译器强制实施指定的使用限制。 例如，此元注释指示该声明类型是其自身，即元注释类型。它只能用在注释类型声明上<br>源码为：<br>@Documented<br>@Retention(RetentionPolicy.RUNTIME)<br>@Target(ElementType.ANNOTATION_TYPE)<br>public @interface Target {<br>ElementType[] value();<br>}<br>@Target(ElementType.TYPE)   //接口、类、枚举、注解<br>@Target(ElementType.FIELD) //字段、枚举的常量<br>@Target(ElementType.METHOD) //方法<br>@Target(ElementType.PARAMETER) //方法参数<br>@Target(ElementType.CONSTRUCTOR)  //构造函数<br>@Target(ElementType.LOCAL_VARIABLE)//局部变量<br>@Target(ElementType.ANNOTATION_TYPE)//注解<br>@Target(ElementType.PACKAGE) ///包  </p>
+<p>3.@Document：说明该注解将被包含在javadoc中</p>
+<p>4.@Inherited：说明子类可以继承父类中的该注解</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/10/java四大元注解/" data-id="cjh1laqwc0001a5bt0zuom123" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-java并发编程--Executor框架" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/10/java并发编程--Executor框架/" class="article-date">
+  <time datetime="2018-04-10T03:14:59.726Z" itemprop="datePublished">2018-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/10/java并发编程--Executor框架/">JAVA并发编程--Executor</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##<br>Eexecutor作为灵活且强大的异步执行框架，其支持多种不同类型的任务执行策略，提供了一种标准的方法将任务的提交过程和执行过程解耦开发，基于生产者-消费者模式，其提交任务的线程相当于生产者，执行任务的线程相当于消费者，并用Runnable来表示任务，Executor的实现还提供了对生命周期的支持，以及统计信息收集，应用程序管理机制和性能监视等机制。<br>1.Exexctor简介<br>Executor的UML图：（常用的几个接口和子类）<br><a href="https://images2015.cnblogs.com/blog/776259/201604/776259-20160426201537486-1323529733.png" target="_blank" rel="noopener">https://images2015.cnblogs.com/blog/776259/201604/776259-20160426201537486-1323529733.png</a><br>Executor：一个接口，其定义了一个接收Runnable对象的方法executor，其方法签名为executor(Runnable command),</p>
+<p>ExecutorService：是一个比Executor使用更广泛的子类接口，其提供了生命周期管理的方法，以及可跟踪一个或多个异步任务执行状况返回Future的方法</p>
+<p>AbstractExecutorService：ExecutorService执行方法的默认实现</p>
+<p>ScheduledExecutorService：一个可定时调度任务的接口</p>
+<p>ScheduledThreadPoolExecutor：ScheduledExecutorService的实现，一个可定时调度任务的线程池</p>
+<p>ThreadPoolExecutor：线程池，可以通过调用Executors以下静态工厂方法来创建线程池并返回一个ExecutorService对象：<br>2.ThreadPoolExecutor构造函数的各个参数说明<br>ThreadPoolExecutor方法签名</p>
+<p>public ThreadPoolExecutor(int corePoolSize,<br>                    int maximumPoolSize,<br>                    long keepAliveTime,<br>                    TimeUnit unit,<br>                    BlockingQueue<runnable> workQueue,<br>                    ThreadFactory threadFactory,<br>                    RejectedExecutionHandler handler) //后两个参数为可选参数<br>参数说明：<br>corePoolSize：核心线程数，如果运行的线程少于corePoolSize，则创建新线程来执行新任务，即使线程池中的其他线程是空闲的</runnable></p>
+<p>maximumPoolSize:最大线程数，可允许创建的线程数，corePoolSize和maximumPoolSize设置的边界自动调整池大小：<br>corePoolSize &lt;运行的线程数&lt; maximumPoolSize:仅当队列满时才创建新线程<br>corePoolSize=运行的线程数= maximumPoolSize：创建固定大小的线程池</p>
+<p>keepAliveTime:如果线程数多于corePoolSize,则这些多余的线程的空闲时间超过keepAliveTime时将被终止</p>
+<p>unit:keepAliveTime参数的时间单位</p>
+<p>workQueue:保存任务的阻塞队列，与线程池的大小有关：<br>当运行的线程数少于corePoolSize时，在有新任务时直接创建新线程来执行任务而无需再进队列<br>当运行的线程数等于或多于corePoolSize，在有新任务添加时则选加入队列，不直接创建线程<br>当队列满时，在有新任务时就创建新线程</p>
+<p>threadFactory:使用ThreadFactory创建新线程，默认使用defaultThreadFactory创建线程</p>
+<p>handle:定义处理被拒绝任务的策略，默认使用ThreadPoolExecutor.AbortPolicy,任务被拒绝时将抛出RejectExecutorException<br>3.Executors：提供了一系列静态工厂方法用于创建各种线程池<br>newFixedThreadPool:创建可重用且固定线程数的线程池，如果线程池中的所有线程都处于活动状态，此时再提交任务就在队列中等待，直到有可用线程；如果线程池中的某个线程由于异常而结束时，线程池就会再补充一条新线程。<br>方法签名：<br>public static ExecutorService newFixedThreadPool(int nThreads) {<br>    return new ThreadPoolExecutor(nThreads, nThreads,0L, TimeUnit.MILLISECONDS,<br>    //使用一个基于FIFO排序的阻塞队列，在所有corePoolSize线程都忙时新任务将在队列中等待<br>    new LinkedBlockingQueue<runnable>());<br>}<br>newSingleThreadExecutor:创建一个单线程的Executor，如果该线程因为异常而结束就新建一条线程来继续执行后续的任务<br>方法签名：<br>public static ExecutorService newSingleThreadExecutor() {<br>    return new FinalizableDelegatedExecutorService<br>//corePoolSize和maximumPoolSize都等于，表示固定线程池大小为1<br>    (new ThreadPoolExecutor(1, 1,0L, TimeUnit.MILLISECONDS,<br>    new LinkedBlockingQueue<runnable>()));<br>}<br>newScheduledThreadPool:创建一个可延迟执行或定期执行的线程池<br>方法签名：</runnable></runnable></p>
+<p>使用newScheduledThreadPool来模拟心跳机制<br>public class HeartBeat {<br>public static void main(String[] args) {<br>ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);<br>Runnable task = new Runnable() {<br>public void run() {<br>System.out.println(“HeartBeat…………………….”);<br>}<br>};<br>executor.scheduleAtFixedRate(task,5,3, TimeUnit.SECONDS);   //5秒后第一次执行，之后每隔3秒执行一次<br>}<br>}<br>newCachedThreadPool:创建可缓存的线程池，如果线程池中的线程在60秒未被使用就将被移除，在执行新的任务时，当线程池中有之前创建的可用线程就重      用可用线程，否则就新建一条线程<br>方法签名：<br>public static ExecutorService newCachedThreadPool() {<br>    return new ThreadPoolExecutor(0, Integer.MAX_VALUE,60L, TimeUnit.SECONDS,<br>    //使用同步队列，将任务直接提交给线程<br>    new SynchronousQueue<runnable>());<br>}<br>通过使用Executor可以很轻易的实现各种调优  管理  监视  记录日志和错误报告等待。<br>4.Executor的生命周期<br>ExecutorService提供了管理Eecutor生命周期的方法，ExecutorService的生命周期包括了：运行  关闭和终止三种状态。</runnable></p>
+<p>ExecutorService在初始化创建时处于运行状态。<br>shutdown方法等待提交的任务执行完成并不再接受新任务，在完成全部提交的任务后关闭<br>shutdownNow方法将强制终止所有运行中的任务并不再允许提交新任务<br>可以将一个Runnable或Callable提交给ExecutorService的submit方法执行，最终返回一上Futire用来获得任务的执行结果或取消任务<br>public class CallableAndFuture {<br>public static void main(String[] args) throws ExecutionException, InterruptedException {<br>ExecutorService executor = Executors.newSingleThreadExecutor();<br>Future<string> future = executor.submit(new Callable<string>() {   //接受一上callable实例<br>public String call() throws Exception {<br>return “MOBIN”;<br>}<br>});<br>System.out.println(“任务的执行结果：”+future.get());<br>}<br>}<br>ExecutorCompletionService:实现了CompletionService，将执行完成的任务放到阻塞队列中，通过take或poll方法来获得执行结果<br>public class CompletionServiceTest {<br>public static void main(String[] args) throws InterruptedException, ExecutionException {<br>ExecutorService executor = Executors.newFixedThreadPool(10);        //创建含10.条线程的线程池<br>CompletionService completionService = new ExecutorCompletionService(executor);<br>for (int i =1; i &lt;=10; i ++) {<br>final  int result = i;<br>completionService.submit(new Callable() {<br>public Object call() throws Exception {<br>Thread.sleep(new Random().nextInt(5000));   //让当前线程随机休眠一段时间<br>return result;<br>}<br>});<br>}<br>System.out.println(completionService.take().get());   //获取执行结果<br>}<br>}<br>通过Executor来设计应用程序可以简化开发过程，提高开发效率，并有助于实现并发，在开发中如果需要创建线程可优先考虑使用Executor</string></string></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/10/java并发编程--Executor框架/" data-id="cjh1laqwe0002a5bt2wyvdjvk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -131,7 +226,97 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/10/hello-world/" data-id="cjg7ndhaf00018ubts7se3ynf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/10/hello-world/" data-id="cjh1laqwf0003a5btfhg6ecj4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spring-boot前后端交互的工具类" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/10/spring-boot前后端交互的工具类/" class="article-date">
+  <time datetime="2018-04-10T03:14:59.726Z" itemprop="datePublished">2018-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/10/spring-boot前后端交互的工具类/">spring-boot前后端交互的工具类</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>元注解是注解的注解，包括@Retention @Target @Document @Inherited四种</p>
+<p>##<br>package com.baidu.p2p.core.j2ee.action;</p>
+<p>import java.util.ArrayList;<br>import java.util.HashMap;<br>import java.util.Map;</p>
+<p>import org.apache.commons.lang3.ArrayUtils;<br>import org.apache.commons.lang3.Validate;<br>import org.apache.ibatis.reflection.MetaObject;<br>import org.apache.ibatis.reflection.SystemMetaObject;</p>
+<p>import com.baidu.p2p.core.fastjson.JSONStringBuilder;<br>import com.baidu.p2p.core.j2ee.exception.BaseRuntimeException;<br>import com.baidu.p2p.core.j2ee.exception.NoPermissionException;<br>import com.baidu.p2p.core.utils.Exceptions;<br>import com.baidu.p2p.core.utils.StringUtils;<br>import com.baidu.p2p.core.utils.UtilType;<br>import com.google.common.collect.Maps;</p>
+<p>public class JsonResult<t> {<br>public static void main(String[] args) {<br>JsonResult&lt;?&gt; o = new JsonResult&lt;&gt;();<br>System.out.println(o.data(“xx”, 12).toJSONString());</t></p>
+<p>HashMap&lt;String, Object&gt; data = Maps.newHashMap();<br>data.put(“list”, new ArrayList&lt;&gt;());<br>data.put(“total”, 100);</p>
+<p>System.out.println(JsonResult.okJsonResultWithData(data).toJSONString());</p>
+<p>System.out.println(JsonResult.failJsonResult(“错误！”).toJSONString());</p>
+<p>System.out.println(JsonResult.needLoginJsonResult().toJSONString());</p>
+<p>}</p>
+<p>public static final String ERROR = “error”;<br>public static final String OK = “ok”;<br>public static final String NEED_LOGIN = “needLogin”;<br>public static final String PERMISSION_DENY = “permissionDeny”;</p>
+<p>public static final String SESSION_TIMEOUT = “sessionTimeout”;<br>public static final String DATABAS_EEXCEPTION = “databaseException”;</p>
+<p>public static final String JSON_TYPE = “json”;<br>public static final String TEXT_TYPE = “text”;<br>public static final String FORWARD_TYPE = “forward”;</p>
+<p>private String status;<br>private String message;<br>private String type;<br>private Integer total;<br>private Boolean onlyData;<br>private String dateFmt;<br>private String debugInfo;</p>
+<p>private T data;</p>
+<p>public String getDebugInfo() {<br>return debugInfo;<br>}</p>
+<p>public void setDebugInfo(String debugInfo) {<br>this.debugInfo = debugInfo;<br>}</p>
+<p>public boolean jsonType() {<br>return (StringUtils.equalsIgnoreCase(JSON_TYPE, this.getType()));<br>}</p>
+<p>public boolean textType() {<br>return (StringUtils.equalsIgnoreCase(TEXT_TYPE, this.getType()));<br>}</p>
+<p>public boolean forwardType() {<br>return (StringUtils.equalsIgnoreCase(FORWARD_TYPE, this.getType()));<br>}</p>
+<p>public String getDateFmt() {<br>return dateFmt;<br>}</p>
+<p>public void setDateFmt(String dateFmt) {<br>this.dateFmt = dateFmt;<br>}</p>
+<p>public static <t> JsonResult<t> okJsonResultWithData(T data) {<br>JsonResult<t> jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setData(data);<br>return jsonResult;<br>}</t></t></t></p>
+<p>public static JsonResult&lt;?&gt; okJsonResult() {<br>return okJsonResultWithMsg(“”);<br>}</p>
+<p>public static JsonResult&lt;?&gt; okJsonResultWithMsg(String message) {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setMessage(message);<br>return jsonResult;<br>}</p>
+<p>public static JsonResult<string> okJsonResultWithContent(String dataType, String content) {<br>JsonResult<string> jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setType(dataType);<br>jsonResult.setData(content);<br>return jsonResult;<br>}</string></string></p>
+<p>public static JsonResult<string> okJsonResultWithForward(String forwardUrl) {<br>JsonResult<string> jsonResult = new JsonResult<string>();<br>jsonResult.setForwardUrl(forwardUrl);<br>return jsonResult;<br>}</string></string></string></p>
+<p>public static JsonResult&lt;?&gt; failJsonResult(String message) {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setStatus(ERROR);<br>jsonResult.setMessage(message);<br>return jsonResult;<br>}<br>public static JsonResult&lt;?&gt; failJsonResult(Throwable wrapped) {<br>JsonResult&lt;?&gt; jsonResult = null;<br>if (wrapped instanceof IllegalArgumentException) {<br>jsonResult = failJsonResult(Exceptions.getMsg(wrapped));<br>} else if (!(wrapped instanceof BaseRuntimeException)) {<br>jsonResult = failJsonResult(“出错了，请检查！”);<br>} else {<br>BaseRuntimeException bre = (BaseRuntimeException) wrapped;<br>if (bre.getMessage() == null &amp;&amp; bre.getErrorCode() == null) {<br>jsonResult = failJsonResult(“出错了，请检查！”);<br>} else {<br>jsonResult = failJsonResult(Exceptions.getMsg(wrapped));<br>}<br>}<br>jsonResult.setDebugInfo(Exceptions.getStackTraceAsString(wrapped));<br>return jsonResult;<br>}<br>public static JsonResult&lt;?&gt; failJsonResult(String status, String message) {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setStatus(status);<br>jsonResult.setMessage(message);<br>return jsonResult;<br>}</p>
+<p>public static <t> JsonResult<t> failJsonResultWithData(T data) {<br>JsonResult<t> jsonResult = new JsonResult<t>();<br>jsonResult.setStatus(ERROR);<br>jsonResult.setData(data);<br>return jsonResult;<br>}</t></t></t></t></p>
+<p>public static JsonResult&lt;?&gt; needLoginJsonResult() {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setStatus(NEED_LOGIN);<br>jsonResult.setMessage(“need login!”);<br>jsonResult.setForwardUrl(“/logout”);<br>return jsonResult;<br>}</p>
+<p>public static JsonResult&lt;?&gt; permissionDenyJsonResult() {<br>return permissionDenyJsonResult(PERMISSION_DENY);<br>}</p>
+<p>public static JsonResult&lt;?&gt; permissionDenyJsonResult(String message) {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setStatus(PERMISSION_DENY);<br>jsonResult.setMessage(message);<br>return jsonResult;<br>}</p>
+<p>public static JsonResult&lt;?&gt; permissionDenyJsonResult(NoPermissionException ex) {<br>JsonResult&lt;?&gt; jsonResult = new JsonResult&lt;&gt;();<br>jsonResult.setStatus(PERMISSION_DENY);<br>jsonResult.setMessage(StringUtils.isEmpty(ex.getMessage()) ? PERMISSION_DENY : ex.getMessage());<br>return jsonResult;<br>}</p>
+<p>public JsonResult() {<br>this.setStatus(OK);<br>}</p>
+<p>public T getData() {<br>return data;<br>}</p>
+<p>public void setData(T data) {<br>this.data = data;<br>}</p>
+<p>public void setData(T data, boolean b) {<br>this.onlyData(b).setData(data);<br>}</p>
+<p>@SuppressWarnings(“unchecked”)<br>public JsonResult<t> data(Map&lt;String, Object&gt; map) {<br>if (this.data == null) {<br>this.data = (T) Maps.&lt;String, Object&gt;newLinkedHashMap();<br>}<br>UtilType.copyProperties(data, map);<br>return this;<br>}</t></p>
+<p>@SuppressWarnings(“unchecked”)<br>public JsonResult<t> data(String key, Object value) {<br>if (this.data == null) {<br>this.data = (T) Maps.&lt;String, Object&gt;newLinkedHashMap();<br>}<br>MetaObject metaObject = SystemMetaObject.forObject(data);<br>metaObject.setValue(key, value);<br>return this;<br>}</t></p>
+<p>public Boolean isOnlyData() {<br>return onlyData;<br>}</p>
+<p>public JsonResult<t> onlyData(Boolean onlyData) {<br>this.onlyData = onlyData;<br>return this;<br>}</t></p>
+<p>@SuppressWarnings(“unchecked”)<br>public void setForwardUrl(String forwardUrl) {<br>this.setType(FORWARD_TYPE);<br>this.setData(((T) forwardUrl));<br>}</p>
+<p>public String getType() {<br>return type;<br>}</p>
+<p>public void setType(String type) {<br>this.type = type;<br>}</p>
+<p>public String getStatus() {<br>return status;<br>}</p>
+<p>public void setStatus(String statusCode) {<br>this.status = statusCode;<br>}</p>
+<p>public String getMessage() {<br>return message;<br>}</p>
+<p>public void setMessage(String message) {<br>this.message = message;<br>}</p>
+<p>public Integer getTotal() {<br>return total;<br>}</p>
+<p>public void setTotal(Integer total) {<br>this.total = total;<br>}</p>
+<p>public String toJSONString() {<br>Validate.notBlank(this.getStatus(), “必须提供StatusCode”);<br>JSONStringBuilder builder = null;<br>if (onlyData != null &amp;&amp; this.isOnlyData()) {<br>builder = new JSONStringBuilder(data);<br>} else {<br>builder = new JSONStringBuilder(this);<br>}<br>String[] excludes = {“dateFmt”};<br>if (StringUtils.isEmpty(this.message)) {<br>excludes = ArrayUtils.add(excludes, “message”);<br>}<br>return builder.dateFmt(dateFmt).exclude(excludes).toString();<br>}</p>
+<p>}</p>
+<p>使用方法为JsonResult.okJsonResult()等等</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/10/spring-boot前后端交互的工具类/" data-id="cjh1laqwh0004a5btwnzeumld" class="article-share-link">Share</a>
       
       
     </footer>
@@ -190,7 +375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/10/java面试整理/" data-id="cjg7ndhah00028ubt4ez1h44x" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/10/java面试整理/" data-id="cjh1laqwi0005a5bta31x44ep" class="article-share-link">Share</a>
       
       
     </footer>
@@ -235,11 +420,19 @@
           </li>
         
           <li>
+            <a href="/2018/04/10/java四大元注解/">JAVA的四大元注解</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/java并发编程--Executor框架/">JAVA并发编程--Executor</a>
+          </li>
+        
+          <li>
             <a href="/2018/04/10/hello-world/">杨佳妮</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/java面试整理/">Java面试整理</a>
+            <a href="/2018/04/10/spring-boot前后端交互的工具类/">spring-boot前后端交互的工具类</a>
           </li>
         
       </ul>

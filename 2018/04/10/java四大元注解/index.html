@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>JAVA的四大元注解 | 崔先生的Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="元注解是注解的注解，包括@Retention @Target @Document @Inherited四种 ##1:@Retention:定义注解的保留策略@Retention(RetentionPolicy.SOURCE)   //注解仅存在于源码中，在class字节码文件中不包含@Retention(RetentionPolicy.CLASS)     // 默认的保留策略，注解会在class">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA的四大元注解">
+<meta property="og:url" content="http://yoursite.com/2018/04/10/java四大元注解/index.html">
+<meta property="og:site_name" content="崔先生的Blog">
+<meta property="og:description" content="元注解是注解的注解，包括@Retention @Target @Document @Inherited四种 ##1:@Retention:定义注解的保留策略@Retention(RetentionPolicy.SOURCE)   //注解仅存在于源码中，在class字节码文件中不包含@Retention(RetentionPolicy.CLASS)     // 默认的保留策略，注解会在class">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-11T05:58:32.873Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JAVA的四大元注解">
+<meta name="twitter:description" content="元注解是注解的注解，包括@Retention @Target @Document @Inherited四种 ##1:@Retention:定义注解的保留策略@Retention(RetentionPolicy.SOURCE)   //注解仅存在于源码中，在class字节码文件中不包含@Retention(RetentionPolicy.CLASS)     // 默认的保留策略，注解会在class">
+  
+    <link rel="alternate" href="/atom.xml" title="崔先生的Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">崔先生的Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java四大元注解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/10/java四大元注解/" class="article-date">
+  <time datetime="2018-04-10T03:14:59.726Z" itemprop="datePublished">2018-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JAVA的四大元注解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>元注解是注解的注解，包括@Retention @Target @Document @Inherited四种</p>
+<p>##<br>1:@Retention:定义注解的保留策略<br>@Retention(RetentionPolicy.SOURCE)   //注解仅存在于源码中，在class字节码文件中不包含<br>@Retention(RetentionPolicy.CLASS)     // 默认的保留策略，注解会在class字节码文件中存在，但运行时无法获得，<br>@Retention(RetentionPolicy.RUNTIME)  // 注解会在class字节码文件中存在，在运行时可以通过反射获取到<br>首 先要明确生命周期长度 SOURCE &lt; CLASS &lt; RUNTIME ，所以前者能作用的地方后者一定也能作用。一般如果需要在运行时去动态获取注解信息，那只能用 RUNTIME 注解；如果要在编译时进行一些预处理操作，比如生成一些辅助代码（如 ButterKnife），就用 CLASS注解；如果只是做一些检查性的操作，比如 @Override 和 @SuppressWarnings，则可选用 SOURCE 注解。<br>枚举的三种策略<br>public enum RetentionPolicy {<br>SOURCE,<br>CLASS,<br>RUNTIME<br>}<br>三种不同策略去注解三个方法<br>@Retention(RetentionPolicy.SOURCE)<br>public @interface SourceLevel {<br>}<br>@Retention(RetentionPolicy.CLASS)<br>public @interface ClassLevel {<br>}<br>@Retention(RetentionPolicy.RUNTIME)<br>public @interface RuntimeLevel {<br>}</p>
+<p>public class Test {</p>
+<p>@SourceLevel<br>public void sourceLevel(){}<br>@ClassLevel<br>public void classLevel(){};<br>@RuntimeLevel<br>public void runtimeLevel(){};</p>
+<p>}</p>
+<p>2.@Target：定义注解的作用目标<br>指示注释类型所适用的程序元素的种类。如果注释类型声明中不存在 Target 元注释，则声明的类型可以用在任一程序元素上。如果存在这样的元注释，则编译器强制实施指定的使用限制。 例如，此元注释指示该声明类型是其自身，即元注释类型。它只能用在注释类型声明上<br>源码为：<br>@Documented<br>@Retention(RetentionPolicy.RUNTIME)<br>@Target(ElementType.ANNOTATION_TYPE)<br>public @interface Target {<br>ElementType[] value();<br>}<br>@Target(ElementType.TYPE)   //接口、类、枚举、注解<br>@Target(ElementType.FIELD) //字段、枚举的常量<br>@Target(ElementType.METHOD) //方法<br>@Target(ElementType.PARAMETER) //方法参数<br>@Target(ElementType.CONSTRUCTOR)  //构造函数<br>@Target(ElementType.LOCAL_VARIABLE)//局部变量<br>@Target(ElementType.ANNOTATION_TYPE)//注解<br>@Target(ElementType.PACKAGE) ///包  </p>
+<p>3.@Document：说明该注解将被包含在javadoc中</p>
+<p>4.@Inherited：说明子类可以继承父类中的该注解</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/10/java四大元注解/" data-id="cjh1laqwc0001a5bt0zuom123" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/10/git的使用经验/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          git的使用经验
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/10/java并发编程--Executor框架/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JAVA并发编程--Executor</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/04/10/git的使用经验/">git的使用经验</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/java四大元注解/">JAVA的四大元注解</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/java并发编程--Executor框架/">JAVA并发编程--Executor</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/hello-world/">杨佳妮</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/spring-boot前后端交互的工具类/">spring-boot前后端交互的工具类</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 崔建东<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
